@@ -47,7 +47,7 @@ class ExchangeViewModel @ViewModelInject constructor(
                         _conversion_all.value = CurrencyEvent.Failure("Unexpected error")
                     } else {
                         _conversion_all.value = CurrencyEvent.Success(
-                            rates.toList()
+                            rates
                         )
                     }
                 }
@@ -93,6 +93,7 @@ class ExchangeViewModel @ViewModelInject constructor(
             _ibanValidation.value = CurrencyEvent.Failure("Not a valid IBAN Number")
             return
         }
+
 
         viewModelScope.launch(dispatchers.io) {
             _ibanValidation.value = CurrencyEvent.Loading

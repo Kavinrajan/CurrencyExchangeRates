@@ -1,7 +1,9 @@
 package com.task.currexchangerates.di
 
+import com.task.currexchangerates.BuildConfig
 import com.task.currexchangerates.data.ExchangeRatesApi
 import com.task.currexchangerates.util.DispatcherProvider
+import com.task.currexchangerates.util.SSLPinning
 import com.task.currexchangerates.view.ExchangeRepository
 import com.task.currexchangerates.view.ExchangeRepositoryImpl
 
@@ -11,12 +13,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-
-private const val BASE_URL = "https://api.exchangeratesapi.io/"
-private const val BASE_URL_TEST = "https://api.apilayer.com/"
 
 @Module
 @InstallIn(ApplicationComponent::class)
@@ -24,9 +25,39 @@ object AppModule {
 
     @Singleton
     @Provides
+    fun getPinnedOkHttpClient(): OkHttpClient {
+        return OkHttpClient.Builder()
+            .certificatePinner(SSLPinning.getPinnedCertificate())
+            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+            .build()
+    }
+
+    /*
+    *  OKhttp client Interceptor header added
+    * */
+    @Singleton
+    @Provides
+    fun provideOkhttpClient(): OkHttpClient {
+        val logging = HttpLoggingInterceptor()
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC)
+
+        return OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .addInterceptor { chain ->
+                val request = chain.request()
+                val newRquest = request.newBuilder().header("apikey", BuildConfig.API_KEY)
+                chain.proceed(newRquest.build())
+            }
+            .build()
+    }
+
+    @Singleton
+    @Provides
     fun provideCurrencyApi(): ExchangeRatesApi = Retrofit.Builder()
-        .baseUrl(BASE_URL_TEST)
+        .baseUrl(BuildConfig.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
+        //.client(getPinnedOkHttpClient())
+        .client(provideOkhttpClient())
         .build()
         .create(ExchangeRatesApi::class.java)
 

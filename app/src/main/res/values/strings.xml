@@ -13,4 +13,5 @@
     </string-array>
     <string name="all_curr_call_failure">All currency call failed.</string>
     <string name="all_curr_call_progress">All currency call In-progress.</string>
+    <string name="_2">2</string>
 </resources>
