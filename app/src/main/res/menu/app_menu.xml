@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/iban_validate"
+        android:title="@string/iban_validate" />
+    <item android:id="@+id/all_curr_conversion"
+        android:title="@string/all_curr_conversion" />
+    <item android:id="@+id/curr_conversion"
+        android:title="@string/curr_conversion" />
+</menu>

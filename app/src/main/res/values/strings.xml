@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">CurrExchangeRates</string>
+    <string name="iban_validate">IBAN Validate</string>
+    <string name="curr_conversion">Curr Conversion</string>
+    <string name="all_curr_conversion">All Curr Conversion</string>
+    <string name="iban_value">IBAN Value</string>
+    <string name="convert">Convert</string>
+    <string name="validate">Validate</string>
+    <string name="kw81cbku0000000000001234560101">KW81CBKU0000000000001234560101</string>
+    <string-array name="currency_codes">
+        <item>KWD</item>
+        <item>EUR</item>
+    </string-array>
+    <string name="all_curr_call_failure">All currency call failed.</string>
+    <string name="all_curr_call_progress">All currency call In-progress.</string>
+</resources>
